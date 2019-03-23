@@ -1,23 +1,20 @@
 import React from "react";
 import { Link } from 'react-router-dom';
+import './TasksList.css';
 
 const TasksList = (props) => {
-    return (
-        <div className="main-wrapper">
-            {props.tasks.length ?
-                <ul> {props.tasks.map(task => {
-                    return <div>
-                        <Link
-                            to={`/tasks/${task.id}`}
-                            params={{ id: task.id }}
-                            key={task.id}>
-                            {task.name}
-                        </Link>
-                    </div>
-                })}</ul>
-                : <div>No tasks</div>
-            }
-        </div>
+    return (props.tasks.length ?
+        <ul className="tasks-list"> {props.tasks.map(task => {
+            return <div className='tasks-list_item'
+                key={task.id}>
+                <Link
+                    to={`/tasks/${task.id}`}
+                    params={{ id: task.id }}>
+                    {task.name}
+                </Link>
+            </div>
+        })}</ul>
+        : <p className='tasks-list tasks-list_infoLabel'>There are no tasks matching!</p>
     );
 }
 

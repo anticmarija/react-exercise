@@ -1,0 +1,15 @@
+.home {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.home_filter {
+    display: inline-flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.home_filter_label {
+    font-size: 18px;
+}

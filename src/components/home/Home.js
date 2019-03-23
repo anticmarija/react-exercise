@@ -1,6 +1,8 @@
 import React from "react";
 import TasksList from '../tasks-list/TasksList';
 import axios from '../../config';
+import Dropdown from "../dropdown/Dropdown";
+import './Home.css';
 
 class Home extends React.Component {
     state = {
@@ -11,57 +13,36 @@ class Home extends React.Component {
     }
 
     getLimitedNumberOfTasks = async (e) => {
-        if (e.target.value !== 'all') {
-            this.setState({
-                limit: e.target.value,
-                loading: true
-            });
-        } else {
-            this.setState({
-                limit: '',
-                loading: true
-            });
-        }
+        const limit = e.target.value !== 'all' ? e.target.value : '';
+        this.setState({
+            limit,
+            loading: true
+        });
     }
 
     getFilteredByStatus = async (e) => {
-        if (e.target.value !== 'all') {
-            this.setState({
-                status: e.target.value,
-                loading: true
-            });
-        } else {
-            this.setState({
-                status: '',
-                loading: true
-            });
-        }
+        const status = e.target.value !== 'all' ? e.target.value : '';
+        this.setState({
+            status,
+            loading: true
+        });
 
     }
 
     async componentDidMount() {
-        const tasks = await axios.get('/tasks');
+        const { data: { items } } = await axios.get('/tasks');
         this.setState({
-            tasks: tasks.data.items,
+            tasks: items,
             loading: false
         });
-
-        const user = await axios.get('/user');
-
-        this.setState({
-            username: user.data.username
-        });
-        console.log('user');
     }
 
     async componentDidUpdate(_, prevState) {
-        console.log('did update')
         if (this.state.limit !== prevState.limit || this.state.status !== prevState.status) {
             const req = '?limit=' + this.state.limit + '&status=' + this.state.status;
-            console.log(req);
-            const tasks = await axios.get('/tasks' + req);
+            const { data: { items } } = await axios.get('/tasks' + req);
             this.setState({
-                tasks: tasks.data.items,
+                tasks: items,
                 loading: false
             });
         }
@@ -69,34 +50,25 @@ class Home extends React.Component {
 
     render() {
         return (
-            <div>
-                <header className="App-header">
-                    Welcome to App!
-                    <span>{this.state.username}</span>
-                </header>
+            <div className='home'>
+                <div className='home_filter'>
+                    <p className='home_filter_label'>Limit number of tasks:</p>
+                    <Dropdown name='limit'
+                        onChange={this.getLimitedNumberOfTasks}
+                        options={['all', '1', '5', '25']} />
+                </div>
 
-                <div>Limit tasks:</div>
-                <select name="limit" onChange={this.getLimitedNumberOfTasks}>
-                    <option value="all">All</option>
-                    <option value="1">1</option>
+                <div className='home_filter'>
+                    <p className='home_filter_label'>FIlter tasks by status:</p>
+                    <Dropdown name='status'
+                        onChange={this.getFilteredByStatus}
+                        options={['all', 'COMPLETED', 'DRAFT', 'QUEUED']} />
+                </div>
 
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                </select>
-
-                <select name="status" onChange={this.getFilteredByStatus}>
-                    <option value="all">All</option>
-                    <option value="COMPLETED">Completed</option>
-                    <option value="DRAFT">Draft</option>
-                    <option value="QUEUED">Queued</option>
-                </select>
-
-                {this.state.loading && <h3>loading...</h3>}
-
-
+                {this.state.loading && <p>Loading...</p>}
                 {!this.state.loading && <TasksList tasks={this.state.tasks} />}
-            </div >)
+            </div >
+        );
     }
 }
 

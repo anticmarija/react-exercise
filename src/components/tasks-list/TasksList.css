@@ -1,0 +1,34 @@
+.tasks-list {
+    display: flex;
+    flex-flow: column nowrap;
+    list-style-type: none;
+    padding: 0;
+}
+
+.tasks-list_item {
+    display: flex;
+    font-size: 16px;
+    width: 100%;
+    height: 50px;
+    border-bottom: 1px solid gray;
+}
+
+.tasks-list_item a {
+    color: #45a1ed;
+    align-self: center;
+    text-decoration: none;
+}
+
+.tasks-list_item a:visited {
+    color: #45a1ed;
+}
+
+.tasks-list_item a:hover {
+    color: gray;
+}
+
+.tasks-list_infoLabel {
+    margin-top: 16px;
+    color: #45a1ed;
+    font-size: 18px;
+}
