@@ -5,9 +5,7 @@ import './TaskDetails.css';
 class TaskDetails extends React.Component {
 
     state = {
-        name: '',
-        status: '',
-        project: '',
+        task: null,
         loading: true,
         error: null
     }
@@ -16,7 +14,8 @@ class TaskDetails extends React.Component {
         try {
             await axios.delete('/tasks/' + this.props.match.params.id);
             this.setState({
-                message: 'Succesfully deleted'
+                message: 'Successfully deleted',
+                task: null
             })
         } catch (err) {
             this.setState({ message: 'This task can not be deleted!' });
@@ -25,25 +24,29 @@ class TaskDetails extends React.Component {
 
 
     async componentDidMount() {
-        const response = await axios.get('/tasks/' + this.props.match.params.id);
-        this.setState({
-            name: response.data.name,
-            status: response.data.status,
-            project: response.data.project,
-            loading: false
-        })
+        try {
+            const { data } = await axios.get('/tasks/' + this.props.match.params.id);
+            this.setState({
+                task: data,
+                loading: false
+            })
+        } catch (err) {
+            this.setState({
+                message: "This task does not exist!"
+            });
+        }
+
     }
     render() {
-        return this.state.loading ? <p className='task-details'>Loading.... </p> :
-            <div className='task-details'>
-                <p className='task-details_label'>Name: {this.state.name}</p>
-                <p className='task-details_label'>Status: {this.state.status}</p>
-                <p className='task-details_label'>Project: {this.state.project}</p>
-
+        return this.state.loading ?
+            <p className='task-details'>Loading.... </p>
+            : <div className='task-details'>
+                <p className='task-details_label'>{this.state.task && this.state.task.name}</p>
+                <p className='task-details_label'>{this.state.task && this.state.task.status}</p>
+                <p className='task-details_label'>{this.state.task && this.state.task.project}</p>
 
                 <button onClick={this.deleteTask} className="tasks-details_button">Delete task</button>
                 <p>{this.state.message}</p>
-
             </div >
 
     }

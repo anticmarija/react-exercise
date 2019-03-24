@@ -13,7 +13,7 @@ class Home extends React.Component {
     }
 
     getLimitedNumberOfTasks = async (e) => {
-        const limit = e.target.value !== 'all' ? e.target.value : '';
+        const limit = e.target.value !== 'ALL' ? e.target.value : '';
         this.setState({
             limit,
             loading: true
@@ -21,7 +21,7 @@ class Home extends React.Component {
     }
 
     getFilteredByStatus = async (e) => {
-        const status = e.target.value !== 'all' ? e.target.value : '';
+        const status = e.target.value !== 'ALL' ? e.target.value : '';
         this.setState({
             status,
             loading: true
@@ -55,14 +55,14 @@ class Home extends React.Component {
                     <p className='home_filter_label'>Limit number of tasks:</p>
                     <Dropdown name='limit'
                         onChange={this.getLimitedNumberOfTasks}
-                        options={['all', '1', '5', '25']} />
+                        options={['ALL', '1', '5', '10', '25']} />
                 </div>
 
                 <div className='home_filter'>
                     <p className='home_filter_label'>FIlter tasks by status:</p>
                     <Dropdown name='status'
                         onChange={this.getFilteredByStatus}
-                        options={['all', 'COMPLETED', 'DRAFT', 'QUEUED']} />
+                        options={['ALL', 'COMPLETED', 'DRAFT', 'QUEUED']} />
                 </div>
 
                 {this.state.loading && <p>Loading...</p>}

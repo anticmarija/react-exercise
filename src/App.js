@@ -4,17 +4,31 @@ import './App.css';
 import axios from './config';
 import Home from './components/home/Home';
 import TaskDetails from './components/task-details/TaskDetails';
+import Modal from './components/modal/Modal';
 
 class App extends Component {
 
   state = {
-    username: ''
+    username: '',
+    modalOpened: false
   }
 
   async componentDidMount() {
     const { data: { username } } = await axios.get('/user');
     this.setState({
       username
+    });
+  }
+
+  openModal = () => {
+    this.setState({
+      modalOpened: true
+    });
+  }
+
+  closeModal = () => {
+    this.setState({
+      modalOpened: false
     });
   }
 
@@ -26,8 +40,16 @@ class App extends Component {
             Welcome to App!
             <span className="app_header_username">{this.state.username}</span>
           </header>
-          <Route path='/' exact component={Home} />
-          <Route path='/tasks/:id' exact component={TaskDetails} />
+          <div className="app-layout">
+            <div className="app-layout_open-modal">
+              <button onClick={this.openModal} className="app-layout_open-modal_button">
+                Create project
+              </button>
+            </div>
+            {this.state.modalOpened && <Modal closeModal={this.closeModal} />}
+            <Route path='/' exact component={Home} />
+            <Route path='/tasks/:id' exact component={TaskDetails} />
+          </div>
         </div >
       </Router >
     );

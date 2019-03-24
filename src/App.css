@@ -3,6 +3,27 @@
   flex-flow: row wrap;
 }
 
+.app-layout {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.app-layout_open-modal {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.app-layout_open-modal_button {
+  height: 40px;
+  background-color: #45a1ed;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  color: white;
+  cursor: pointer;
+}
+
 .app_header {
   text-align: center;
   background-color: #282c34;
