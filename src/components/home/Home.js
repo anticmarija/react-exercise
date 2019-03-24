@@ -30,21 +30,29 @@ class Home extends React.Component {
     }
 
     async componentDidMount() {
-        const { data: { items } } = await axios.get('/tasks');
-        this.setState({
-            tasks: items,
-            loading: false
-        });
+        try {
+            const { data: { items } } = await axios.get('/tasks');
+            this.setState({
+                tasks: items,
+                loading: false
+            });
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     async componentDidUpdate(_, prevState) {
         if (this.state.limit !== prevState.limit || this.state.status !== prevState.status) {
             const req = '?limit=' + this.state.limit + '&status=' + this.state.status;
-            const { data: { items } } = await axios.get('/tasks' + req);
-            this.setState({
-                tasks: items,
-                loading: false
-            });
+            try {
+                const { data: { items } } = await axios.get('/tasks' + req);
+                this.setState({
+                    tasks: items,
+                    loading: false
+                });
+            } catch (err) {
+                console.error(err);
+            }
         }
     }
 

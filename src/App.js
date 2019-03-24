@@ -14,10 +14,14 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    const { data: { username } } = await axios.get('/user');
-    this.setState({
-      username
-    });
+    try {
+      const { data: { username } } = await axios.get('/user');
+      this.setState({
+        username
+      });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   openModal = () => {
